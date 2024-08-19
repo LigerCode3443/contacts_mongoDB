@@ -4,12 +4,14 @@ import validateBody from "../decorators/validateBody.js";
 import {
   createContactSchema,
   updateContactSchema,
+  updateContactSchemaFavorite,
 } from "../schemas/contactsSchemas.js";
 
 import isValidId from "../middlewares/isValidId.js";
 
 const addMiddleware = validateBody(createContactSchema);
 const updateMiddleware = validateBody(updateContactSchema);
+const updateMiddlewareFavorite = validateBody(updateContactSchemaFavorite);
 
 const contactsRouter = Router();
 
@@ -26,6 +28,13 @@ contactsRouter.put(
   isValidId,
   updateMiddleware,
   contactsControllers.updateContact
+);
+
+contactsRouter.patch(
+  "/:id/favorite",
+  isValidId,
+  updateMiddlewareFavorite,
+  contactsControllers.updateStatusContactFavorite
 );
 
 export default contactsRouter;

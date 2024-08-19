@@ -10,3 +10,5 @@ export const addContact = () => Contact.create(data);
 
 export const updateContactById = (id, data) =>
   Contact.findByIdAndUpdate(id, data);
+
+export const updateStatusContact = (id, data) => Contact.findById(id, data);

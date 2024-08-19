@@ -37,7 +37,7 @@ const createContact = async (req, res) => {
   res.status(201).json(result);
 };
 
-const updateContact = async (req, res, next) => {
+const updateContact = async (req, res) => {
   const { id } = req.params;
 
   const result = await contactsService.updateContactById(id, req.body);
@@ -49,10 +49,22 @@ const updateContact = async (req, res, next) => {
   res.json(result);
 };
 
+const updateStatusContactFavorite = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await contactsService.updateStatusContact(id, req.body);
+
+  if (!result) {
+    throw HttpError(404, `Contact with id=${id} not found`);
+  }
+  res.json(result);
+};
+
 export default {
   getAllContacts: ctrlWrapper(getAllContacts),
   getOneContact: ctrlWrapper(getOneContact),
   deleteContact: ctrlWrapper(deleteContact),
   createContact: ctrlWrapper(createContact),
   updateContact: ctrlWrapper(updateContact),
+  updateStatusContactFavorite: ctrlWrapper(updateStatusContactFavorite),
 };
