@@ -1,11 +1,12 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
-
+import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import contactsRouter from "./routes/contactsRouter.js";
 
+dotenv.config();
 const app = express();
 
 app.use(morgan("tiny"));
@@ -23,10 +24,8 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message });
 });
 
-const DB_HOST = `mongodb+srv://Volodymyr:orXM6dg8MRF3icpV@cluster0.bc4wi.mongodb.net/my-contacts?retryWrites=true&w=majority&appName=Cluster0`;
-
 mongoose
-  .connect(DB_HOST)
+  .connect(process.env.DB_HOST)
   .then(() => {
     console.log("Database connection successful");
     app.listen(3000, () => {
