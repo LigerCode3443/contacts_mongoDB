@@ -6,7 +6,7 @@ export const getContactById = (contactId) => Contact.findById(contactId);
 
 export const removeContact = (contactId) => Contact.findOneAndDelete(contactId);
 
-export const addContact = () => Contact.create(data);
+export const addContact = (data) => Contact.create(data);
 
 export const updateContactById = (id, data) =>
   Contact.findByIdAndUpdate(id, data);
