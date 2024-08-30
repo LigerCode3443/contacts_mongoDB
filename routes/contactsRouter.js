@@ -6,14 +6,16 @@ import {
   updateContactSchema,
   updateContactSchemaFavorite,
 } from "../schemas/contactsSchemas.js";
-
 import isValidId from "../middlewares/isValidId.js";
+import authenticate from "../middlewares/authenticate.js";
 
 const addMiddleware = validateBody(createContactSchema);
 const updateMiddleware = validateBody(updateContactSchema);
 const updateMiddlewareFavorite = validateBody(updateContactSchemaFavorite);
 
 const contactsRouter = Router();
+
+contactsRouter.use(authenticate);
 
 contactsRouter.get("/", contactsControllers.getAllContacts);
 
