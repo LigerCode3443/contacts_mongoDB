@@ -3,7 +3,7 @@ import * as fs from "node:fs/promises";
 import path from "node:path";
 
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
-import * as Jimp from "jimp";
+import { Jimp } from "jimp";
 
 const avatarPath = path.resolve("public", "avatars");
 
@@ -52,7 +52,7 @@ const updateAvatar = async (req, res) => {
   const newPath = path.join(avatarPath, filename);
   await fs.rename(oldPath, newPath);
 
-  console.log(oldPath);
+  const avatar = Jimp.read(oldPath);
 
   avatar.resize(250, 250);
 
