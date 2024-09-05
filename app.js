@@ -13,6 +13,7 @@ const app = express();
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
+app.use(express.static("public"));
 
 app.use("/api/contacts", contactsRouter);
 app.use("/api/auth", authRouter);
@@ -30,8 +31,8 @@ mongoose
   .connect(process.env.DB_HOST)
   .then(() => {
     console.log("Database connection successful");
-    app.listen(3000, () => {
-      console.log("Server is running. Use our API on port: 3000");
+    app.listen(4000, () => {
+      console.log("Server is running. Use our API on port: 4000");
     });
   })
   .catch((e) => {
