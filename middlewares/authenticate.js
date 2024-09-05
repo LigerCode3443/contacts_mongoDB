@@ -27,7 +27,7 @@ const authenticate = async (req, res, next) => {
   }
 
   if (!user.token) {
-    return next(HttpError(401, "User alredy logout"));
+    return next(HttpError(401, "User already logout"));
   }
 
   req.user = user;

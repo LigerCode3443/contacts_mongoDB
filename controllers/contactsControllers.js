@@ -9,8 +9,6 @@ const getAllContacts = async (req, res) => {
   const { page = 1, limit = 10, favorite } = req.query;
   const skip = (page - 1) * limit;
   if (!favorite) {
-    console.log(favorite);
-
     const result = await contactsService.listContacts(
       { owner },
       { skip, limit }
