@@ -1,13 +1,14 @@
 import * as authServices from "../services/authServices.js";
 import * as fs from "node:fs/promises";
 import path from "node:path";
-
+import gravatar from "gravatar";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import { Jimp } from "jimp";
 
 const avatarPath = path.resolve("public", "avatars");
 
 const register = async (req, res) => {
+
   const newUser = await authServices.signup(req.body);
 
   res.status(201).json({
