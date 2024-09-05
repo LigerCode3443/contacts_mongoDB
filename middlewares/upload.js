@@ -1,6 +1,8 @@
 import multer from "multer";
 
-import path from "node:path";
+import * as path from "node:path";
+
+import HttpError from "../helpers/HttpError.js";
 
 const destination = path.resolve("temp");
 
