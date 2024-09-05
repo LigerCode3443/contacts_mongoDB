@@ -1,13 +1,14 @@
 import * as authServices from "../services/authServices.js";
 import * as fs from "node:fs/promises";
 import path from "node:path";
-
+import gravatar from "gravatar";
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
-import * as Jimp from "jimp";
+import { Jimp } from "jimp";
 
 const avatarPath = path.resolve("public", "avatars");
 
 const register = async (req, res) => {
+
   const newUser = await authServices.signup(req.body);
 
   res.status(201).json({
@@ -50,13 +51,13 @@ const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: oldPath, filename } = req.file;
   const newPath = path.join(avatarPath, filename);
+
+  const avatar = await Jimp.read(oldPath);
+  avatar.resize({ w: 250, h: 250 });
+
   await fs.rename(oldPath, newPath);
 
-  console.log(oldPath);
-
-  avatar.resize(250, 250);
-
-  await avatar.writeAsync(newPath);
+  await avatar.write(newPath);
 
   const avatarURL = path.join("avatars", filename);
 
