@@ -46,4 +46,16 @@ describe("test /api/auth//users/login", () => {
       expect(validSubscriptions).toContain(user.subscription);
     }
   });
+  test("test login with incorrect password", async () => {
+    const loginData = {
+      email: "vova@gmail.com",
+      password: "1234567",
+    };
+    const { statusCode, body } = await request(server)
+      .post("/api/auth//users/login")
+      .send(loginData);
+
+    expect(statusCode).toBe(401);
+    expect(body).toHaveProperty("message", "Email or password is wrong");
+  });
 });
