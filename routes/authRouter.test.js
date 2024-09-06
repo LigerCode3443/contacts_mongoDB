@@ -35,12 +35,27 @@ describe("test /api/auth//users/login", () => {
     expect(body.user).toHaveProperty("subscription");
     expect(typeof body.user.email).toBe("string");
     expect(typeof body.user.subscription).toBe("string");
+    const validSubscriptions = ["starter", "pro", "business"];
+    expect(validSubscriptions).toContain(body.user.subscription);
 
     const user = await findUser({ email: loginData.email });
 
     expect(user).toBeTruthy();
     if (user) {
       expect(user.email).toBe(loginData.email);
+      expect(validSubscriptions).toContain(user.subscription);
     }
+  });
+  test("test login with incorrect password", async () => {
+    const loginData = {
+      email: "vova@gmail.com",
+      password: "1234567",
+    };
+    const { statusCode, body } = await request(server)
+      .post("/api/auth//users/login")
+      .send(loginData);
+
+    expect(statusCode).toBe(401);
+    expect(body).toHaveProperty("message", "Email or password is wrong");
   });
 });

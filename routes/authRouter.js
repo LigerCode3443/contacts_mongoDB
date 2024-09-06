@@ -4,12 +4,17 @@ import authControllers from "../controllers/authControllers.js";
 
 import validateBody from "../decorators/validateBody.js";
 
-import { userRegisterSchema, userLoginSchema } from "../schemas/userSchemas.js";
+import {
+  userRegisterSchema,
+  userLoginSchema,
+  userEmailSchema,
+} from "../schemas/userSchemas.js";
 import authenticate from "../middlewares/authenticate.js";
 import upload from "../middlewares/upload.js";
 
 const registerMiddleware = validateBody(userRegisterSchema);
 const loginMiddleware = validateBody(userLoginSchema);
+const resendVerifyEmailMiddleware = validateBody(userEmailSchema);
 
 const authRouter = Router();
 
@@ -26,6 +31,14 @@ authRouter.get("/users/current", authenticate, authControllers.getCurrent);
 authRouter.post("/users/logout", authenticate, authControllers.logout);
 
 authRouter.patch("/users", authenticate, authControllers.updateSubscription);
+
+authRouter.get("/users/verify/:verificationToken", authControllers.verify);
+
+authRouter.post(
+  "/users/verify",
+  resendVerifyEmailMiddleware,
+  authControllers.resendVerify
+);
 
 authRouter.patch(
   "/users/avatars",
