@@ -1,14 +1,13 @@
 import * as authServices from "../services/authServices.js";
 import * as fs from "node:fs/promises";
 import path from "node:path";
-import gravatar from "gravatar";
+
 import ctrlWrapper from "../decorators/ctrlWrapper.js";
 import { Jimp } from "jimp";
 
 const avatarPath = path.resolve("public", "avatars");
 
 const register = async (req, res) => {
-
   const newUser = await authServices.signup(req.body);
 
   res.status(201).json({
@@ -68,8 +67,30 @@ const updateAvatar = async (req, res) => {
   });
 };
 
+const verify = async (req, res) => {
+  const { verificationToken } = req.params;
+
+  await authServices.verifyUser(verificationToken);
+
+  res.json({
+    message: "Email verified successful",
+  });
+};
+
+const resendVerify = async (req, res) => {
+  const { email } = req.body;
+
+  await authServices.resendVerifyEmail(email);
+
+  res.json({
+    message: "Verify email send again",
+  });
+};
+
 export default {
   register: ctrlWrapper(register),
+  verify: ctrlWrapper(verify),
+  resendVerify: ctrlWrapper(resendVerify),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
